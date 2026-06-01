@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import ImageMapper from 'react-img-mapper';
 import teamsJson from './teams.json'
 
-const ResponsiveImageMapper = ({ src, map, imgWidth, clickFunc, parentWidth = '100%' }) => {
+const ResponsiveImageMapper = ({ src, map, imgWidth, clickFunc, parentWidth = '100%', showTeamLabels = true }) => {
   const [dimensions, setDimensions] = useState({ width: 0 });
   const [hoverIndex, setHoverIndex] = useState(null);
   const [hoverCoords, setHoverCoords] = useState({ x: 0, y: 0 });
@@ -56,7 +56,8 @@ const ResponsiveImageMapper = ({ src, map, imgWidth, clickFunc, parentWidth = '1
       {map.areas.map((area, index) => {
         const scaledAreaCoords = scaledCoords(area.coords, scale);
         const [centerX, centerY] = getPolygonCenter(scaledAreaCoords);
-        const tableNum = area.name.split('-')[2]; // Extract table_num from area.name
+        const nameParts = area.name.split('-');
+        const tableNum = nameParts[nameParts.length - 1];
         const fontSize = baseFontSize * scale; // Scale the font size
         const size = baseSize * scale; // Scale the size of the circle
 
@@ -83,7 +84,7 @@ const ResponsiveImageMapper = ({ src, map, imgWidth, clickFunc, parentWidth = '1
           </div>
         );
       })}
-      {hoverIndex !== null && (
+      {showTeamLabels && hoverIndex !== null && teamsJson[hoverIndex] && (
         <div
           className="absolute bg-zinc-700 text-white text-xs rounded py-1 px-2 z-20"
           style={{
@@ -112,8 +113,8 @@ const ResponsiveImageMapper = ({ src, map, imgWidth, clickFunc, parentWidth = '1
         imgWidth={imgWidth}
         width={dimensions.width}
         onClick={clickFunc}
-        onMouseEnter={(area, index, event) => handleMouseEnter(index, area.coords)}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={showTeamLabels ? (area, index) => handleMouseEnter(index, area.coords) : undefined}
+        onMouseLeave={showTeamLabels ? handleMouseLeave : undefined}
         responsive={false}
       />
     </div>

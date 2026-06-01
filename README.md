@@ -1,44 +1,61 @@
-# Software Fair Guide
+# Software Fair Guide (2026)
 
-A display of all the projects in Stanford's CS 210 and 194! Check out the link [here](https://cs210.github.io/SoftwareGuide/)!
+Static interactive floor plan for Stanford's CS 210 Software Fair at **CoDa B80 (Kuang Auditorium)** and the outside patio.
 
-## To Run
+## Run locally
 
-### Frontend
-
-First, install all necessary dependencies:
 ```bash
-npm run install
-```
-
-Next, run the development server:
-```bash
+npm install
 npm run dev
 ```
 
-### Backend Scripts
+Open [http://localhost:3000](http://localhost:3000).
 
-First, make a copy of the Google Form found [here](https://docs.google.com/forms/d/e/1FAIpQLScfF8IDrwYKKic6A2kVAI_DdzyTwEtYoIVHfNsN-zVDyOiH9A/viewform) for the corresponding year. Then, after you have all of the responses, download the `.csv` file and name it `input.csv`. Finally, feel free to edit `categories.csv` -- to include and/or remove categories for projects -- as well as edit `layout.csv`.
+## Build static site (GitHub Pages)
 
-Finally, once you're all ready, run the main script to generate the necessary data:
 ```bash
-cd backend
-python3 software_guide_generator.py
+npm run build
 ```
 
-## Contribution
+Output is written to `out/` and can be deployed as a static site (GitHub Actions workflow included).
 
-The CI/CD pipeline is configured to push automatically to GitHub pages upon push.
+## Project structure
 
-## Old Notes
+| Path | Purpose |
+|------|---------|
+| `src/data/floorPlanTables.js` | Table positions (42 tables) — edit or regenerate when layout changes |
+| `src/data/teams.js` | Team list for map labels and search (empty for now) |
+| `src/app/components/FloorPlanMap.js` | SVG floor plan UI |
+| `diagram_drawio.html` | Source diagram for table layout |
 
-### How to change teaminfo
-Note that all of the team information can be found team_info.csv inside of the update_software_guide folder.
-Here you can change the table each team is assigned to and any other relevant info. To assign two teams to
-the same table you can simply append .a or .b to that teams table number. The fill color for each team will be automatically 
-set to the AI category color if it is an AI-relevant project; otherwise, it will default to the first category color.
+## Updating the layout
 
-### How to add categories
-If you would like to add categories, edit the categories.csv file within the update_software_guide folder. Add
-a name and associated tailwind UI color.
+1. Edit table rectangles in `diagram_drawio.html` (draw.io).
+2. Regenerate positions (optional, uses Python in `backend/`):
+   ```bash
+   cd backend && python3 extract_layout_from_drawio.py
+   ```
+3. Copy resulting coordinates into `src/data/floorPlanTables.js`, or run the Node snippet in the backend README.
 
+## Adding teams later
+
+Append entries to `src/data/teams.js`:
+
+```js
+export const TEAMS = [
+  {
+    teamName: "Example Project",
+    teamNum: "5",
+    description: "...",
+    categories: ["Education"],
+    teamMembers: "Name A, Name B",
+    sectionNum: 0,
+  },
+];
+```
+
+The map will show team names on hover when `TEAMS` is non-empty.
+
+## Backend scripts (optional)
+
+The `backend/` folder holds Python helpers used to generate layout data from Google Form CSVs and draw.io. **The live site does not use a server** — only the static files in `src/data/` and `src/app/`.

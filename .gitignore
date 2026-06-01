@@ -18,6 +18,8 @@
 
 # misc
 .DS_Store
+backend/.venv
+backend/data/layout_preview.jpg
 *.pem
 
 # debug
