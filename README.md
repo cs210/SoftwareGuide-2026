@@ -19,6 +19,20 @@ npm run build
 
 Output is written to `out/` and can be deployed as a static site (GitHub Actions workflow included).
 
+## Live site (GitHub Pages)
+
+**URL:** [https://cs210.github.io/SoftwareGuide-2026/](https://cs210.github.io/SoftwareGuide-2026/)
+
+### First-time setup (repo admin, one time)
+
+The deploy workflow fails with `Get Pages site failed` until GitHub Pages is turned on:
+
+1. Open **Settings → Pages** on [github.com/cs210/SoftwareGuide-2026](https://github.com/cs210/SoftwareGuide-2026)
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**
+3. Re-run the latest workflow from the **Actions** tab (or push again to `main`)
+
+Org owners may need to allow Pages for the `cs210` organization under **Organization settings → Pages**.
+
 ## Project structure
 
 | Path | Purpose |

@@ -2,8 +2,7 @@ import { PATH_RECTS, ROOM_PATH, STAGE } from "@/data/floorPlanLayout";
 import { MAP_VIEWBOX } from "@/data/floorPlanTables";
 
 const ROOM_FILL = "#f4f5f7";
-const PATH_COLOR = "#64748b";
-const PATH_OPACITY = 0.28;
+const PATH_COLOR = "#94a3b8";
 const PATH_THICKNESS = 11;
 const BORDER_COLOR = "#cbd5e1";
 
@@ -15,9 +14,6 @@ function PathRect({ cx, cy, w, angleDeg }) {
       width={w}
       height={PATH_THICKNESS}
       fill={PATH_COLOR}
-      stroke={PATH_COLOR}
-      strokeWidth={0}
-      opacity={PATH_OPACITY}
       transform={`translate(${cx} ${cy}) rotate(${angleDeg})`}
     />
   );
@@ -31,9 +27,15 @@ export default function RoomBackground() {
       <g clipPath="url(#room-clip)">
         <path d={ROOM_PATH} fill="#fafbfc" />
 
-        {PATH_RECTS.map((r, i) => (
-          <PathRect key={i} cx={r.cx} cy={r.cy} w={r.w} angleDeg={r.angleDeg} />
-        ))}
+        {/* darken blend: overlapping aisles keep the same tint (no stacked opacity) */}
+        <g
+          style={{ mixBlendMode: "darken", isolation: "isolate" }}
+          opacity={0.42}
+        >
+          {PATH_RECTS.map((r, i) => (
+            <PathRect key={i} cx={r.cx} cy={r.cy} w={r.w} angleDeg={r.angleDeg} />
+          ))}
+        </g>
 
         <rect
           x={STAGE.x}

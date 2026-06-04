@@ -1,17 +1,15 @@
 category,color,hex_color
-AI,red-500,#EF4444
 Automotive,blue-400,#60A5FA
-Behavior Change/Wellness,teal-400,#2dd4bf
+Behavior Change/Wellness,teal-400,#2DD4BF
 Business/Office,green-400,#4ADE80
-Commerce,indigo-400,#818cf8
-Marketing,pink-500,#EC4899
+Commerce,indigo-400,#818CF8
 Education,lime-400,#A3E635
 Finance,orange-400,#FB923C
 Games,purple-500,#A855F7
 Healthcare,yellow-400,#FACC15
-Leisure/Travel,cyan-400,#22D3EE
 Productivity,red-800,#991B1B
-Social Good,emerald-400,#34D399
+Research,indigo-500,#6366F1
 Security,fuchsia-500,#D946EF
 Social Media,sky-400,#38BDF8
 XR,amber-500,#F59E0B
+Other,stone-500,#78716C

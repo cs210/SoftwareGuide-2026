@@ -9,7 +9,7 @@ export default function MapLegend({ activeFilter, onFilterChange }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <p className={styles.title}>Filter by field</p>
+        <p className={styles.title}>Filter by genre</p>
         {activeFilter && (
           <button
             type="button"

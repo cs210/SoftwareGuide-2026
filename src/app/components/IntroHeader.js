@@ -1,32 +1,47 @@
-import React from 'react';
-import styles from './IntroHeader.module.css';
+import styles from "./IntroHeader.module.css";
 
 const IntroHeader = () => {
-    return (
-        <header className={styles.header}>
-            <h1 className={styles.title}>
-                <span className={styles.highlight}>2026</span>
-                Software Fair
-            </h1>
-            <div className={styles.info}>
-                <span className="font-semibold">When: </span>
-                <span>Spring 2026 — schedule to be announced</span>
-            </div>
-            <div className={styles.info}>
-                <span className="font-semibold">Where: </span>
-                <a href="https://campus-map.stanford.edu/?id=08-300&lat=37.426108&lng=-122.17017&zoom=17" className={styles.link}>
-                    CoDa B80 (Kuang Auditorium) &amp; outside patio
-                </a>
-            </div>
-            <p className={`${styles.info} text-zinc-600 text-sm mt-2`}>
-                Indoor tables 1–42 match the floor plan below (center 1–24, left wing 25–33, right wing 34–42). Patio tables will be added once assignments are finalized.
-            </p>
-            <div className={styles.info}>
-                <span className="font-semibold">Parking Guide: </span>
-                <a href="https://transportation.stanford.edu/parking-stanford/where-park/parking-stanford-campus" className={styles.link}>Map</a>
-            </div>
-        </header>
-    );
+  return (
+    <header className={styles.header}>
+      <p className={styles.eyebrow}>Stanford CS 210</p>
+      <h1 className={styles.title}>
+        <span className={styles.highlight}>2026</span>
+        Software Fair
+      </h1>
+      <p className={styles.lede}>
+        Join <strong>40+ teams</strong> from (CS210, CS194, and CS191) demoing software across genres, from
+        education and health to games, research, and more. Use the interactive
+        map below to explore CoDa B80 and find projects by field.
+      </p>
+
+      <div className={styles.details}>
+        <div className={styles.detailRow}>
+          <span className={styles.label}>When</span>
+          <span className={styles.value}>
+            Wednesday, June 10, 2026 · 3:30–6:30 PM
+          </span>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.label}>Where</span>
+          <a
+            href="https://campus-map.stanford.edu/?id=07-430&lat=37.42985851734201&lng=-122.17117633253574&zoom=17&srch=undefined"
+            className={styles.link}
+          >
+            CoDa B80 (Kuang Auditorium) &amp; outside patio
+          </a>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.label}>Parking</span>
+          <a
+            href="https://transportation.stanford.edu/parking-stanford/where-park/parking-stanford-campus"
+            className={styles.link}
+          >
+            Campus parking guide
+          </a>
+        </div>
+      </div>
+    </header>
+  );
 };
 
 export default IntroHeader;

@@ -10,7 +10,8 @@ import MapLegend from "./MapLegend";
 import styles from "./FloorPlanMap.module.css";
 
 const ACCENT = "#D03C3B";
-const TABLE_SCALE = 1.12;
+/** Slightly smaller than layout rects so tables don’t overlap. */
+const TABLE_SCALE = 0.88;
 
 function TableUnit({
   table,
@@ -205,7 +206,7 @@ export default function FloorPlanMap({ showTeamLabels = false }) {
         <p className={styles.hint}>
           {activeFilter
             ? `${filteredCount} table${filteredCount === 1 ? "" : "s"} · ${activeFilter}`
-            : "Tap a field above to filter · click a table to highlight"}
+            : "Tap a genre above to filter · click a table to highlight"}
         </p>
       </div>
     </div>
