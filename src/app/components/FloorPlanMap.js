@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { ZONE_BOUNDS } from "@/data/floorPlanLayout";
 import { FLOOR_PLAN_TABLES, MAP_DISPLAY } from "@/data/floorPlanTables";
-import { getFieldForTable } from "@/data/sectionFields";
-import { TEAMS } from "@/data/teams";
+import {
+  getGenreForTable,
+  getTeamsAtTable,
+  parseTableNum,
+  teamMatchesGenre,
+} from "@/lib/teamUtils";
 import RoomBackground, { ROOM_PATH } from "./RoomBackground";
 import MapLegend from "./MapLegend";
 import styles from "./FloorPlanMap.module.css";
@@ -20,17 +23,19 @@ function TableUnit({
   isDimmed,
   onSelect,
   onHover,
-  showTeamName,
   teamName,
-  zoneField,
+  tableGenre,
 }) {
   const { cx, cy, w, h, angleDeg, tableNum } = table;
-  const active = isSelected || isHovered;
   const tableW = w * TABLE_SCALE;
   const tableH = h * TABLE_SCALE;
-  const fieldColor = zoneField?.color ?? "#52525b";
+  const fieldColor = tableGenre?.color ?? "#94a3b8";
   const fill = fieldColor;
-  const stroke = active ? ACCENT : "rgba(255,255,255,0.35)";
+  const stroke = isSelected
+    ? ACCENT
+    : isHovered && !isDimmed
+      ? "rgba(255,255,255,0.85)"
+      : "rgba(255,255,255,0.35)";
   const groupOpacity = isDimmed ? 0.22 : 1;
 
   return (
@@ -43,7 +48,7 @@ function TableUnit({
       onMouseLeave={() => onHover(null)}
       role="button"
       tabIndex={isDimmed ? -1 : 0}
-      aria-label={`Table ${tableNum}${zoneField ? `, ${zoneField.label}` : ""}${teamName ? `, ${teamName}` : ""}`}
+      aria-label={`Table ${tableNum}${tableGenre ? `, ${tableGenre.label}` : ""}${teamName ? `, ${teamName}` : ""}`}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -59,7 +64,7 @@ function TableUnit({
           height={tableH + HIT_PAD * 2}
           fill="transparent"
         />
-        {active && !isDimmed && (
+        {isSelected && !isDimmed && (
           <rect
             x={-tableW / 2 - 5}
             y={-tableH / 2 - 5}
@@ -81,7 +86,7 @@ function TableUnit({
           rx={5}
           fill={fill}
           stroke={stroke}
-          strokeWidth={active ? 2.5 : 1.5}
+          strokeWidth={isSelected ? 2.5 : isHovered ? 2 : 1.5}
           style={{
             filter: isDimmed
               ? "none"
@@ -103,79 +108,78 @@ function TableUnit({
           {tableNum}
         </text>
       </g>
-
-      {showTeamName && teamName && isHovered && !isDimmed && (
-        <g transform={`translate(${cx} ${cy - tableH / 2 - 18})`}>
-          <rect
-            x={-Math.min(76, teamName.length * 4)}
-            y={-11}
-            width={Math.min(152, teamName.length * 8)}
-            height={22}
-            rx={5}
-            fill="#1e293b"
-          />
-          <text
-            x={0}
-            y={1}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="#f8fafc"
-            fontSize={10}
-            fontWeight="500"
-          >
-            {teamName.length > 18 ? `${teamName.slice(0, 16)}…` : teamName}
-          </text>
-        </g>
-      )}
     </g>
   );
 }
 
-export default function FloorPlanMap({ showTeamLabels = false }) {
-  const [selected, setSelected] = useState(null);
+export default function FloorPlanMap({
+  teams = [],
+  activeFilter,
+  onFilterChange,
+  selectedTable,
+  onTableSelect,
+}) {
   const [hovered, setHovered] = useState(null);
-  const [activeFilter, setActiveFilter] = useState(null);
 
   const tables = useMemo(
     () => [...FLOOR_PLAN_TABLES].sort((a, b) => a.tableNum - b.tableNum),
     []
   );
 
-  const tablesWithFields = useMemo(
-    () =>
-      tables.map((table) => ({
-        ...table,
-        zoneField: getFieldForTable(table.cx, table.cy, ZONE_BOUNDS),
-      })),
-    [tables]
-  );
+  const genreByTable = useMemo(() => {
+    const map = {};
+    tables.forEach((table) => {
+      map[table.tableNum] = getGenreForTable(table.tableNum, teams);
+    });
+    return map;
+  }, [tables, teams]);
 
   const teamByTable = useMemo(() => {
     const map = {};
-    if (!Array.isArray(TEAMS)) return map;
-    TEAMS.forEach((t) => {
-      const num = parseInt(String(t.teamNum).split(".")[0], 10);
-      if (!Number.isNaN(num)) map[num] = t.teamName;
+    teams.forEach((t) => {
+      const num = parseTableNum(t.teamNum);
+      if (num == null) return;
+      if (!map[num]) map[num] = t.teamName;
+      else map[num] = `${map[num]}, ${t.teamName}`;
     });
     return map;
-  }, []);
+  }, [teams]);
 
-  const handleSelect = useCallback((num) => {
-    setSelected((prev) => (prev === num ? null : num));
-  }, []);
+  const handleSelect = useCallback(
+    (num) => {
+      if (selectedTable === num) {
+        setHovered(null);
+      }
+      onTableSelect?.(num);
+    },
+    [selectedTable, onTableSelect]
+  );
 
-  const filteredCount = useMemo(() => {
+  const filteredTableCount = useMemo(() => {
     if (!activeFilter) return null;
-    return tablesWithFields.filter((t) => t.zoneField?.label === activeFilter)
-      .length;
-  }, [activeFilter, tablesWithFields]);
+    return tables.filter((t) =>
+      teams.some(
+        (team) =>
+          parseTableNum(team.teamNum) === t.tableNum &&
+          teamMatchesGenre(team, activeFilter)
+      )
+    ).length;
+  }, [activeFilter, tables, teams]);
+
+  const hint = useMemo(() => {
+    if (selectedTable != null) {
+      const n = getTeamsAtTable(teams, selectedTable).length;
+      return `Table ${selectedTable} · ${n} team${n === 1 ? "" : "s"} below`;
+    }
+    if (activeFilter) {
+      return `${filteredTableCount ?? 0} table${filteredTableCount === 1 ? "" : "s"} with ${activeFilter} teams`;
+    }
+    return "Filter by genre or click a table · teams listed below";
+  }, [selectedTable, activeFilter, filteredTableCount, teams]);
 
   return (
     <div className={styles.wrapper}>
-      <MapLegend
-        activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
-      />
+      <MapLegend activeFilter={activeFilter} onFilterChange={onFilterChange} />
 
       <div className={styles.card}>
         <svg
@@ -191,31 +195,35 @@ export default function FloorPlanMap({ showTeamLabels = false }) {
           </defs>
           <RoomBackground />
           <g clipPath="url(#room-clip)">
-            {tablesWithFields.map((table) => {
-              const matches =
-                !activeFilter || table.zoneField?.label === activeFilter;
+            {tables.map((table) => {
+              const isSelected = selectedTable === table.tableNum;
+              const hasGenreTeam =
+                activeFilter &&
+                teams.some(
+                  (team) =>
+                    parseTableNum(team.teamNum) === table.tableNum &&
+                    teamMatchesGenre(team, activeFilter)
+                );
+              const isDimmed =
+                activeFilter && !isSelected && !hasGenreTeam;
+
               return (
                 <TableUnit
                   key={table.tableNum}
                   table={table}
-                  zoneField={table.zoneField}
-                  isDimmed={!matches}
-                  isSelected={selected === table.tableNum}
+                  tableGenre={genreByTable[table.tableNum]}
+                  isDimmed={isDimmed && !isSelected}
+                  isSelected={isSelected}
                   isHovered={hovered === table.tableNum}
                   onSelect={handleSelect}
                   onHover={setHovered}
-                  showTeamName={showTeamLabels}
                   teamName={teamByTable[table.tableNum]}
                 />
               );
             })}
           </g>
         </svg>
-        <p className={styles.hint}>
-          {activeFilter
-            ? `${filteredCount} table${filteredCount === 1 ? "" : "s"} · ${activeFilter}`
-            : "Tap a genre above to filter · click a table to highlight"}
-        </p>
+        <p className={styles.hint}>{hint}</p>
       </div>
     </div>
   );

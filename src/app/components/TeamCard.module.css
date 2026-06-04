@@ -1,0 +1,71 @@
+.card {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card:last-child {
+  border-bottom: none;
+}
+
+.name {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.625rem;
+  letter-spacing: -0.01em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+}
+
+.chip {
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.meta {
+  font-size: 0.9375rem;
+  color: #334155;
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.toggle {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d03c3b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.toggle:hover {
+  color: #b83232;
+}
+
+.description {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: #f1f5f9;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #334155;
+}

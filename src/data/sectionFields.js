@@ -1,6 +1,5 @@
 /**
- * 2026 Software Fair genres — colors for tables by zone.
- * Edit zone assignments when official table layout by field is published.
+ * 2026 Software Fair genres — colors for filters, chips, and table fills (via team categories).
  */
 export const GENRES = [
   { label: "Automotive", color: "#60A5FA" },
@@ -16,6 +15,7 @@ export const GENRES = [
   { label: "Security", color: "#D946EF" },
   { label: "Social Media", color: "#38BDF8" },
   { label: "XR", color: "#F59E0B" },
+  { label: "Other", color: "#78716C" },
 ];
 
 /** 3 columns × 4 rows — first 12 genres on the map; XR & Other in filter only until assigned. */
@@ -26,7 +26,7 @@ export const FIELD_ZONES = [
   [GENRES[9], GENRES[10], GENRES[11]],
 ];
 
-export const EXTRA_FIELDS = [GENRES[12], GENRES[13]];
+export const EXTRA_FIELDS = [];
 
 export function getZoneIndices(cx, cy, bounds) {
   const { x: xBounds, y: yBounds } = bounds;
