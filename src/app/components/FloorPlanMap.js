@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ZONE_BOUNDS } from "@/data/floorPlanLayout";
-import { FLOOR_PLAN_TABLES, MAP_VIEWBOX } from "@/data/floorPlanTables";
+import { FLOOR_PLAN_TABLES, MAP_DISPLAY } from "@/data/floorPlanTables";
 import { getFieldForTable } from "@/data/sectionFields";
 import { TEAMS } from "@/data/teams";
 import RoomBackground, { ROOM_PATH } from "./RoomBackground";
@@ -10,8 +10,8 @@ import MapLegend from "./MapLegend";
 import styles from "./FloorPlanMap.module.css";
 
 const ACCENT = "#D03C3B";
-/** Slightly smaller than layout rects so tables don’t overlap. */
-const TABLE_SCALE = 0.88;
+const TABLE_SCALE = 1;
+const HIT_PAD = 8;
 
 function TableUnit({
   table,
@@ -52,6 +52,13 @@ function TableUnit({
       }}
     >
       <g transform={`translate(${cx} ${cy}) rotate(${angleDeg})`}>
+        <rect
+          x={-tableW / 2 - HIT_PAD}
+          y={-tableH / 2 - HIT_PAD}
+          width={tableW + HIT_PAD * 2}
+          height={tableH + HIT_PAD * 2}
+          fill="transparent"
+        />
         {active && !isDimmed && (
           <rect
             x={-tableW / 2 - 5}
@@ -66,6 +73,7 @@ function TableUnit({
           />
         )}
         <rect
+          className={styles.tableShape}
           x={-tableW / 2}
           y={-tableH / 2}
           width={tableW}
@@ -172,7 +180,7 @@ export default function FloorPlanMap({ showTeamLabels = false }) {
       <div className={styles.card}>
         <svg
           className={styles.svg}
-          viewBox={`0 0 ${MAP_VIEWBOX.width} ${MAP_VIEWBOX.height}`}
+          viewBox={`${MAP_DISPLAY.x} ${MAP_DISPLAY.y} ${MAP_DISPLAY.width} ${MAP_DISPLAY.height}`}
           xmlns="http://www.w3.org/2000/svg"
           aria-label="CoDa B80 table layout"
         >

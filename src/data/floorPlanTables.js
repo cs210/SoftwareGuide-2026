@@ -1,5 +1,8 @@
 /** Auto-generated from finallayout.html */
 export const MAP_VIEWBOX = { width: 800, height: 630 };
+
+/** Cropped view so the room fills the screen (less empty margin). */
+export const MAP_DISPLAY = { x: 38, y: 76, width: 724, height: 560 };
 export const STAGE = { x: 142, y: 94, width: 540, height: 58 };
 
 export const FLOOR_PLAN_TABLES = [

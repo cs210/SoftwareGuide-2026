@@ -1,5 +1,5 @@
 import { PATH_RECTS, ROOM_PATH, STAGE } from "@/data/floorPlanLayout";
-import { MAP_VIEWBOX } from "@/data/floorPlanTables";
+import { MAP_DISPLAY } from "@/data/floorPlanTables";
 
 const ROOM_FILL = "#f4f5f7";
 const PATH_COLOR = "#94a3b8";
@@ -22,7 +22,13 @@ function PathRect({ cx, cy, w, angleDeg }) {
 export default function RoomBackground() {
   return (
     <>
-      <rect width={MAP_VIEWBOX.width} height={MAP_VIEWBOX.height} fill={ROOM_FILL} />
+      <rect
+        x={MAP_DISPLAY.x}
+        y={MAP_DISPLAY.y}
+        width={MAP_DISPLAY.width}
+        height={MAP_DISPLAY.height}
+        fill={ROOM_FILL}
+      />
 
       <g clipPath="url(#room-clip)">
         <path d={ROOM_PATH} fill="#fafbfc" />
