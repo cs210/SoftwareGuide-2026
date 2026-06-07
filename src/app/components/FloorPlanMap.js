@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { FLOOR_PLAN_TABLES, MAP_DISPLAY } from "@/data/floorPlanTables";
 import {
   getGenreForTable,
+  getTableFillColor,
   getTeamsAtTable,
   isCheckInTable,
   parseTableNum,
@@ -153,12 +154,12 @@ function TableUnit({
   onHover,
   teamName,
   tableGenre,
+  fillColor,
 }) {
   const { cx, cy, w, h, angleDeg, tableNum } = table;
   const tableW = w * TABLE_SCALE;
   const tableH = h * TABLE_SCALE;
-  const fieldColor = tableGenre?.color ?? "#94a3b8";
-  const fill = fieldColor;
+  const fill = fillColor;
   const stroke = isSelected
     ? ACCENT
     : isHovered && !isDimmed
@@ -358,6 +359,11 @@ export default function FloorPlanMap({
                   key={table.tableNum}
                   table={table}
                   tableGenre={genreByTable[table.tableNum]}
+                  fillColor={getTableFillColor(
+                    table.tableNum,
+                    teams,
+                    activeFilter
+                  )}
                   isDimmed={isDimmed && !isSelected}
                   isSelected={isSelected}
                   isHovered={hovered === table.tableNum}

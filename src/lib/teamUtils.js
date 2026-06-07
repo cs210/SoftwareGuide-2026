@@ -6,6 +6,9 @@ const genreColorByLabel = Object.fromEntries(
   GENRES.map((g) => [g.label, g.color])
 );
 
+/** Neutral fill when no genre filter is active. */
+export const DEFAULT_TABLE_FILL = "#94a3b8";
+
 export function isCheckInTable(tableNum) {
   return CHECK_IN_TABLES.includes(tableNum);
 }
@@ -46,6 +49,19 @@ export function getGenreForTable(tableNum, teams) {
 /** Default zone genre for a table position (unused for fill color). */
 export function getZoneGenreForTable(tableNum) {
   return TABLE_ZONE_GENRE[tableNum] ?? null;
+}
+
+/** Table fill: uniform by default; active filter color when a team matches. */
+export function getTableFillColor(tableNum, teams, activeFilter) {
+  if (activeFilter) {
+    const matches = teams.some(
+      (team) =>
+        parseTableNum(team.teamNum) === tableNum &&
+        teamMatchesGenre(team, activeFilter)
+    );
+    if (matches) return genreColor(activeFilter);
+  }
+  return DEFAULT_TABLE_FILL;
 }
 
 export function getTeamsForGenre(teams, genreLabel) {
