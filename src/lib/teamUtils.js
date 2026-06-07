@@ -1,4 +1,5 @@
 import { GENRES } from "@/data/sectionFields";
+import { TABLE_ZONE_GENRE } from "@/data/tableZones";
 
 const genreColorByLabel = Object.fromEntries(
   GENRES.map((g) => [g.label, g.color])
@@ -27,13 +28,19 @@ export function getTeamsAtTable(teams, tableNum) {
   return teams.filter((t) => parseTableNum(t.teamNum) === tableNum);
 }
 
-/** Primary genre + color for a table (from assigned team). */
+/** Genre label + color for a table (from assigned team's primary genre). */
 export function getGenreForTable(tableNum, teams) {
   const tableTeams = getTeamsAtTable(teams, tableNum);
   if (tableTeams.length === 0) return null;
-  const label = tableTeams[0].categories[0]?.trim();
+  const label =
+    tableTeams[0]?.primaryGenre?.trim() || tableTeams[0]?.categories[0]?.trim();
   if (!label) return null;
   return { label, color: genreColor(label) };
+}
+
+/** Default zone genre for a table position (unused for fill color). */
+export function getZoneGenreForTable(tableNum) {
+  return TABLE_ZONE_GENRE[tableNum] ?? null;
 }
 
 export function getTeamsForGenre(teams, genreLabel) {

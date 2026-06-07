@@ -94,20 +94,20 @@ function TableUnit({
             cursor: isDimmed ? "default" : "pointer",
           }}
         />
-        <text
-          x={0}
-          y={1}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#ffffff"
-          fontSize={Math.max(12, Math.min(16, tableW * 0.42))}
-          fontWeight="700"
-          fontFamily="system-ui, -apple-system, sans-serif"
-          style={{ pointerEvents: "none", userSelect: "none" }}
-        >
-          {tableNum}
-        </text>
       </g>
+      <text
+        x={cx}
+        y={cy + 1}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill="#ffffff"
+        fontSize={Math.max(12, Math.min(16, tableW * 0.42))}
+        fontWeight="700"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        style={{ pointerEvents: "none", userSelect: "none" }}
+      >
+        {tableNum}
+      </text>
     </g>
   );
 }
