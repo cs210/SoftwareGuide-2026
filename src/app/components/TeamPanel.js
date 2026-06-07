@@ -6,6 +6,7 @@ import {
   getTeamsAtTable,
   getTeamsForGenre,
   groupTeamsByGenre,
+  isCheckInTable,
 } from "@/lib/teamUtils";
 import TeamCard from "./TeamCard";
 import styles from "./TeamPanel.module.css";
@@ -29,6 +30,25 @@ export default function TeamPanel({ teams, activeFilter, selectedTable }) {
   );
 
   if (selectedTable != null) {
+    if (isCheckInTable(selectedTable)) {
+      return (
+        <section className={styles.panel} aria-labelledby="team-panel-title">
+          <h2 id="team-panel-title" className={styles.heading}>
+            Table {selectedTable} · Check-in ★
+          </h2>
+          <div className={styles.checkInCard}>
+            <p className={styles.checkInLead}>
+              Staff check-in desk — not a demo table.
+            </p>
+            <p className={styles.checkInBody}>
+              Pick up your materials, get oriented, and check in with fair staff
+              here before heading to your assigned table.
+            </p>
+          </div>
+        </section>
+      );
+    }
+
     return (
       <section className={styles.panel} aria-labelledby="team-panel-title">
         <h2 id="team-panel-title" className={styles.heading}>

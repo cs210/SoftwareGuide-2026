@@ -5,6 +5,7 @@ import { FLOOR_PLAN_TABLES, MAP_DISPLAY } from "@/data/floorPlanTables";
 import {
   getGenreForTable,
   getTeamsAtTable,
+  isCheckInTable,
   parseTableNum,
   teamMatchesGenre,
 } from "@/lib/teamUtils";
@@ -13,8 +14,135 @@ import MapLegend from "./MapLegend";
 import styles from "./FloorPlanMap.module.css";
 
 const ACCENT = "#D03C3B";
+const CHECK_IN_FILL = "#F59E0B";
+const CHECK_IN_STROKE = "#B45309";
 const TABLE_SCALE = 1;
 const HIT_PAD = 8;
+
+function starPoints(outerR, innerR) {
+  const pts = [];
+  for (let i = 0; i < 10; i += 1) {
+    const angle = (Math.PI / 2) * -1 + (i * Math.PI) / 5;
+    const r = i % 2 === 0 ? outerR : innerR;
+    pts.push([r * Math.cos(angle), r * Math.sin(angle)]);
+  }
+  return pts.map(([x, y]) => `${x},${y}`).join(" ");
+}
+
+function CheckInTableUnit({
+  table,
+  isSelected,
+  isHovered,
+  onSelect,
+  onHover,
+}) {
+  const { cx, cy, w, h, angleDeg, tableNum } = table;
+  const tableW = w * TABLE_SCALE;
+  const tableH = h * TABLE_SCALE;
+  const stroke = isSelected
+    ? ACCENT
+    : isHovered
+      ? "#FFFBEB"
+      : CHECK_IN_STROKE;
+
+  return (
+    <g
+      className={`${styles.tableGroup} ${styles.checkInGroup}`}
+      onClick={() => onSelect(tableNum)}
+      onMouseEnter={() => onHover(tableNum)}
+      onMouseLeave={() => onHover(null)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Table ${tableNum}, check-in desk`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect(tableNum);
+        }
+      }}
+    >
+      <g transform={`translate(${cx} ${cy}) rotate(${angleDeg})`}>
+        <rect
+          x={-tableW / 2 - HIT_PAD}
+          y={-tableH / 2 - HIT_PAD}
+          width={tableW + HIT_PAD * 2}
+          height={tableH + HIT_PAD * 2}
+          fill="transparent"
+        />
+        {isSelected && (
+          <rect
+            x={-tableW / 2 - 5}
+            y={-tableH / 2 - 5}
+            width={tableW + 10}
+            height={tableH + 10}
+            rx={6}
+            fill="none"
+            stroke={ACCENT}
+            strokeWidth={2.5}
+            opacity={0.55}
+          />
+        )}
+        <rect
+          className={styles.checkInShape}
+          x={-tableW / 2}
+          y={-tableH / 2}
+          width={tableW}
+          height={tableH}
+          rx={5}
+          fill={CHECK_IN_FILL}
+          stroke={stroke}
+          strokeWidth={isSelected ? 2.5 : isHovered ? 2 : 2}
+          strokeDasharray="6 3"
+        />
+        {[
+          [-tableW * 0.34, -tableH * 0.34],
+          [tableW * 0.34, -tableH * 0.34],
+          [-tableW * 0.34, tableH * 0.34],
+          [tableW * 0.34, tableH * 0.34],
+        ].map(([sx, sy], i) => (
+          <polygon
+            key={i}
+            points={starPoints(5, 2.2)}
+            transform={`translate(${sx} ${sy})`}
+            fill="#FFFBEB"
+            opacity={0.95}
+          />
+        ))}
+      </g>
+      <text
+        x={cx}
+        y={cy - 8}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill="#ffffff"
+        fontSize={15}
+        fontWeight="800"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        style={{ pointerEvents: "none", userSelect: "none" }}
+      >
+        {tableNum}
+      </text>
+      <text
+        x={cx}
+        y={cy + 7}
+        textAnchor="middle"
+        fill="#FFFBEB"
+        fontSize={8}
+        fontWeight="700"
+        letterSpacing="0.04em"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        style={{ pointerEvents: "none", userSelect: "none" }}
+      >
+        <tspan x={cx} dy="0">
+          CHECK
+        </tspan>
+        <tspan x={cx} dy="9">
+          IN
+        </tspan>
+      </text>
+    </g>
+  );
+}
 
 function TableUnit({
   table,
@@ -168,6 +296,9 @@ export default function FloorPlanMap({
 
   const hint = useMemo(() => {
     if (selectedTable != null) {
+      if (isCheckInTable(selectedTable)) {
+        return `Table ${selectedTable} · Check-in desk`;
+      }
       const n = getTeamsAtTable(teams, selectedTable).length;
       return `Table ${selectedTable} · ${n} team${n === 1 ? "" : "s"} below`;
     }
@@ -197,6 +328,21 @@ export default function FloorPlanMap({
           <g clipPath="url(#room-clip)">
             {tables.map((table) => {
               const isSelected = selectedTable === table.tableNum;
+              const checkIn = isCheckInTable(table.tableNum);
+
+              if (checkIn) {
+                return (
+                  <CheckInTableUnit
+                    key={table.tableNum}
+                    table={table}
+                    isSelected={isSelected}
+                    isHovered={hovered === table.tableNum}
+                    onSelect={handleSelect}
+                    onHover={setHovered}
+                  />
+                );
+              }
+
               const hasGenreTeam =
                 activeFilter &&
                 teams.some(

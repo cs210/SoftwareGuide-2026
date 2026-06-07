@@ -42,3 +42,16 @@
   stroke: #d03c3b;
   stroke-width: 2.5;
 }
+
+.checkInGroup {
+  cursor: pointer;
+}
+
+.checkInShape {
+  filter: drop-shadow(0 2px 6px rgb(180 83 9 / 0.35));
+}
+
+.checkInGroup:focus-visible .checkInShape {
+  stroke: #d03c3b;
+  stroke-width: 2.5;
+}

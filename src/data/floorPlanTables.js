@@ -5,6 +5,9 @@ export const MAP_VIEWBOX = { width: 800, height: 630 };
 export const MAP_DISPLAY = { x: 38, y: 76, width: 724, height: 560 };
 export const STAGE = { x: 142, y: 94, width: 540, height: 58 };
 
+/** Staff check-in desks — not assigned to demo teams. */
+export const CHECK_IN_TABLES = [23, 24];
+
 export const FLOOR_PLAN_TABLES = [
   { tableNum: 1, section: "center", cx: 267.5, cy: 281.5, w: 55, h: 35, angleDeg: -90 },
   { tableNum: 2, section: "center", cx: 319.5, cy: 282.5, w: 55, h: 35, angleDeg: -90 },

@@ -25,6 +25,27 @@
   padding: 0.5rem 0 1rem;
 }
 
+.checkInCard {
+  padding: 1rem 1.125rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 2px dashed #f59e0b;
+}
+
+.checkInLead {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 0.5rem;
+}
+
+.checkInBody {
+  font-size: 0.9375rem;
+  color: #78350f;
+  line-height: 1.55;
+  margin: 0;
+}
+
 .genreSection {
   margin-bottom: 0.5rem;
   border-bottom: 2px solid #e2e8f0;

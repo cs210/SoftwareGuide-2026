@@ -1,9 +1,14 @@
+import { CHECK_IN_TABLES } from "@/data/floorPlanTables";
 import { GENRES } from "@/data/sectionFields";
 import { TABLE_ZONE_GENRE } from "@/data/tableZones";
 
 const genreColorByLabel = Object.fromEntries(
   GENRES.map((g) => [g.label, g.color])
 );
+
+export function isCheckInTable(tableNum) {
+  return CHECK_IN_TABLES.includes(tableNum);
+}
 
 /** Parse "24", "12.a" → 12 for map matching. */
 export function parseTableNum(teamNum) {
