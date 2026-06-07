@@ -9,7 +9,7 @@ const IntroHeader = () => {
         Software Fair
       </h1>
       <p className={styles.lede}>
-        Join <strong>40+ teams</strong> from (CS210, CS194, and CS191) demoing software across genres, from
+        Join <strong>40+ teams</strong> from CS210, CS194, and CS191 demoing software across genres, from
         education and health to games, research, and more. Use the interactive
         map below to explore CoDa B80 and find projects by field.
       </p>
