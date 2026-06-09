@@ -235,10 +235,10 @@ export const TEAMS = [
     "primaryGenre": "Business/Office"
   },
   {
-    "teamName": "Civitas",
+    "teamName": "Pursuit",
     "teamNum": "22",
-    "teamMembers": "Brooke Ballhaus",
-    "description": "Civitas is a procurement-intelligence platform that automates the matching process between small and medium-sized California government contractors and Requests for Proposals from local, municipal, and state agencies. While many productivity tools exist for federal contractors, state/municipal contractors waste time searching fragmented sites and using outdated portals. Civitas constantly scrapes RFPs from 60+ procurement sites and scores them per-contractor using an AI-powered matching algorithm. Contractors are empowered to efficiently make informed decisions about which RFPs to bid on by using the LLM-generated match summaries, RFP descriptions, score breakdown, incumbency warnings, and capabilities analyses, reducing the discovery process from days to minutes. Our RFP tracker then aids the user through the complicated bidding process. At Civitas, we value accuracy, explainability, and security so that small contractors can spend less time searching and more time building.",
+    "teamMembers": "Carlos Daniel Joseph Hernandez",
+    "description": "Federal contract capture engine by Downtrace AI. Pursuit turns SAM.gov noise into a decision brief: explainable fit scoring, profile-grounded gap analysis, a 3-step pursuit playbook, and an AI-assisted proposal workspace — all keyed to your company profile. Built on Next.js 16 (App Router) + TypeScript + Tailwind v4 + Zustand.",
     "categories": [
       "Business/Office",
       "Commerce",
