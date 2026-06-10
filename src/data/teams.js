@@ -235,13 +235,12 @@ export const TEAMS = [
     "primaryGenre": "Business/Office"
   },
   {
-    "teamName": "Pursuit",
+    "teamName": "Atlas",
     "teamNum": "22",
-    "teamMembers": "Carlos Daniel Joseph Hernandez",
-    "description": "Federal contract capture engine by Downtrace AI. Pursuit turns SAM.gov noise into a decision brief: explainable fit scoring, profile-grounded gap analysis, a 3-step pursuit playbook, and an AI-assisted proposal workspace — all keyed to your company profile. Built on Next.js 16 (App Router) + TypeScript + Tailwind v4 + Zustand.",
+    "teamMembers": "Andrew Grant, Ji Qi Ni, Olatayo (Tayo) Sobomehin, Ose Okhihan, Nicholas Donaldson",
+    "description": "Atlas is a privacy-first AI executive assistant for macOS that brings Spotlight-style search to your entire digital workspace. Running locally on your machine, Atlas indexes files, emails, messages, and calendar events, then lets you ask natural-language questions to find the exact document, conversation, or event you need. Its hybrid retrieval system combines semantic search, path-aware ranking, and local query parsing to surface relevant results quickly while keeping your data under your control. By default, processing happens on-device, so personal information stays private and users retain ownership of their data.",
     "categories": [
       "Business/Office",
-      "Commerce",
       "Productivity"
     ],
     "primaryGenre": "Business/Office"
@@ -340,12 +339,13 @@ export const TEAMS = [
     "primaryGenre": "Research"
   },
   {
-    "teamName": "Atlas",
+    "teamName": "Pursuit",
     "teamNum": "34",
-    "teamMembers": "Andrew Grant, Ji Qi Ni, Olatayo (Tayo) Sobomehin, Ose Okhihan, Nicholas Donaldson",
-    "description": "Atlas is a privacy-first AI executive assistant for macOS that brings Spotlight-style search to your entire digital workspace. Running locally on your machine, Atlas indexes files, emails, messages, and calendar events, then lets you ask natural-language questions to find the exact document, conversation, or event you need. Its hybrid retrieval system combines semantic search, path-aware ranking, and local query parsing to surface relevant results quickly while keeping your data under your control. By default, processing happens on-device, so personal information stays private and users retain ownership of their data.",
+    "teamMembers": "Carlos Daniel Joseph Hernandez",
+    "description": "Federal contract capture engine by Downtrace AI. Pursuit turns SAM.gov noise into a decision brief: explainable fit scoring, profile-grounded gap analysis, a 3-step pursuit playbook, and an AI-assisted proposal workspace — all keyed to your company profile. Built on Next.js 16 (App Router) + TypeScript + Tailwind v4 + Zustand.",
     "categories": [
       "Business/Office",
+      "Commerce",
       "Productivity"
     ],
     "primaryGenre": "Business/Office"

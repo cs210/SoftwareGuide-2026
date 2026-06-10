@@ -69,7 +69,7 @@ GENRE_TABLE_POOLS = {
     "Education": [8, 9, 10, 11, 12, 13, 14],
     # 14 teams — one table each, no sharing
     "Business/Office": [
-        34,
+        22,
         36,
         37,
         39,
@@ -82,7 +82,7 @@ GENRE_TABLE_POOLS = {
         18,
         20,
         21,
-        22,
+        34,
     ],
 }
 
@@ -124,7 +124,6 @@ TEAM_NAME_OVERRIDES = {
     "5": "Nemo",
     "Justin Leong": "Intern Onboarding",
 }
-
 
 def normalize_name(name: str) -> str:
     return re.sub(r"\s+", " ", name.strip().lower())
